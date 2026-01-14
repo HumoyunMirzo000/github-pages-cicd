@@ -1,7 +1,10 @@
-name: Deploy to GitHub Pages
+name: CI/CD GitHub Pages
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
@@ -11,7 +14,18 @@ permissions:
   id-token: write
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build check
+        run: echo "Build successful"
+
   deploy:
+    if: github.event_name == 'push'
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
