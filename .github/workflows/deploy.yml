@@ -1,9 +1,9 @@
-name: CI/CD GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
-   pull_request:
+  pull_request:
     branches:
-      - main
+      - main  # Main branchga kod tushganda ishga tushadi
 
 permissions:
   contents: read
@@ -11,31 +11,20 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout kodni yuklash
         uses: actions/checkout@v4
 
-      - name: Build check
-        run: echo "Build successful"
-
-  deploy:
-    if: github.event_name == 'push'
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Configure GitHub Pages
+      - name: GitHub Pages-ni sozlash
         uses: actions/configure-pages@v4
 
-      - name: Upload Pages artifact
+      - name: Fayllarni yuklash (Upload)
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: '.'  # Loyihangiz joylashgan joy (hozirgi papka)
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy qilish
+        id: deployment
         uses: actions/deploy-pages@v4
